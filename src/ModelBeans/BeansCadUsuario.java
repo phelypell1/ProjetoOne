@@ -5,6 +5,7 @@ public class BeansCadUsuario {
     
     private String idUsuario;
     private String nomeUsuario;
+    private String username;
     private String senha;
     private String email;
     private String categoria;
@@ -88,5 +89,19 @@ public class BeansCadUsuario {
      */
     public void setCategoria(String categoria) {
         this.categoria = categoria;
+    }
+
+    /**
+     * @return the username
+     */
+    public String getUsername() {
+        return username;
+    }
+
+    /**
+     * @param username the username to set
+     */
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
