@@ -15,6 +15,7 @@ import ModelDao.DaoCadUsuario;
 public class ViewCadUsuarios extends javax.swing.JFrame {
     BeansCadUsuario cadUser = new BeansCadUsuario();
     DaoCadUsuario DaoUser = new DaoCadUsuario();
+    int flag = 0;
     
     /**
      * Creates new form ViewCadUsuarios
@@ -205,7 +206,6 @@ public class ViewCadUsuarios extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-           
         cadUser.setNomeUsuario(textNome.getText());
         cadUser.setUsername(textUserName.getText());
         cadUser.setSenha(textSenha.getText());
