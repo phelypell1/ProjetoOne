@@ -4,7 +4,7 @@ package ModelBeans;
 public class BeansCadUsuario {
     
     private int idUsuario;
-    private String nomeUsuario;
+    private String matricula;
     private String username;
     private String senha;
     private String email;
@@ -15,13 +15,17 @@ public class BeansCadUsuario {
     public BeansCadUsuario() {
     }
 
-    public BeansCadUsuario(int idUsuario, String nomeUsuario, String senha, String email, String categoria) {
+    public BeansCadUsuario(int idUsuario, String matricula, String username, String senha, String email, String categoria, String pesquisa) {
         this.idUsuario = idUsuario;
-        this.nomeUsuario = nomeUsuario;
+        this.matricula = matricula;
+        this.username = username;
         this.senha = senha;
         this.email = email;
         this.categoria = categoria;
+        this.pesquisa = pesquisa;
     }
+
+    
 
     /**
      * @return the idUsuario
@@ -37,23 +41,7 @@ public class BeansCadUsuario {
         this.idUsuario = idUsuario;
     }
 
-    /**
-     * @return the nomeUsuario
-     */
-    public String getNomeUsuario() {
-        return nomeUsuario;
-    }
-
-    /**
-     * @param nomeUsuario the nomeUsuario to set
-     */
-    public void setNomeUsuario(String nomeUsuario) {
-        this.nomeUsuario = nomeUsuario;
-    }
-
-    /**
-     * @return the senha
-     */
+     
     public String getSenha() {
         return senha;
     }
@@ -119,5 +107,19 @@ public class BeansCadUsuario {
      */
     public void setPesquisa(String pesquisa) {
         this.pesquisa = pesquisa;
+    }
+
+    /**
+     * @return the matricula
+     */
+    public String getMatricula() {
+        return matricula;
+    }
+
+    /**
+     * @param matricula the matricula to set
+     */
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
     }
 }

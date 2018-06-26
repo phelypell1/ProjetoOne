@@ -27,13 +27,15 @@ public class ConexaoDB {
             JOptionPane.showMessageDialog(null,"Erro ao conectar com o Banco !"+ex.getMessage());
         }
     }
-    public void ExecutaSQL(String sql){
+    public void executaSQL(String sql){
         try {
             stm = con.createStatement(rs.TYPE_SCROLL_INSENSITIVE, rs.CONCUR_READ_ONLY);
             rs = stm.executeQuery(sql);
+            
         } catch (SQLException ex) {
-            Logger.getLogger(ConexaoDB.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Erro ao executar EXECUTASQL"+ex.getMessage());
         }
+        
     }
     
     public void ExitConnection(){
