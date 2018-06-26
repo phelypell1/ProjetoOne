@@ -139,6 +139,11 @@ public class ViewCadUsuarios extends javax.swing.JFrame {
         jLabel7.setText("Pesquisa");
 
         buttonBuscar.setText("Buscar");
+        buttonBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonBuscarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -322,6 +327,21 @@ public class ViewCadUsuarios extends javax.swing.JFrame {
         buttonCancelar.setEnabled(true);
         buttonNovoCadastro.setEnabled(false);
     }//GEN-LAST:event_buttonEditarActionPerformed
+
+    private void buttonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBuscarActionPerformed
+        
+        cadUser.setPesquisa(textBuscar.getText());
+        BeansCadUsuario busc = DaoUser.Busca(cadUser);
+        
+        jTextField1.setText(String.valueOf(busc.getIdUsuario()));
+        textNome.setText(busc.getNomeUsuario());
+        textUserName.setText(busc.getUsername());
+        textSenha.setText(busc.getSenha());
+        textEmail.setText(busc.getEmail());
+        jcomboCategoria.setSelectedItem(busc.getCategoria());
+        
+        
+    }//GEN-LAST:event_buttonBuscarActionPerformed
 
     /**
      * @param args the command line arguments

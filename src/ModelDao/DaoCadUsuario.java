@@ -48,20 +48,20 @@ public class DaoCadUsuario {
         conex.ExitConnection();
     }
     
-    public BeansCadUsuario pesquisa(BeansCadUsuario pesquisa){
+    public BeansCadUsuario Busca(BeansCadUsuario pesquisa){
         conex.Conection();
         conex.ExecutaSQL("select * from Usuario where username like '%"+pesquisa.getNomeUsuario()+"%'");
         try {
             conex.rs.first();
             pesquisa.setIdUsuario(conex.rs.getInt("idUsuario"));
             pesquisa.setNomeUsuario(conex.rs.getString("nomeUsuario"));
-            pesquisa.setNomeUsuario(conex.rs.getString("userName"));
-            pesquisa.setNomeUsuario(conex.rs.getString("senha"));
-            pesquisa.setNomeUsuario(conex.rs.getString("email"));
-            pesquisa.setNomeUsuario(conex.rs.getString("categoria"));
+            pesquisa.setUsername(conex.rs.getString("username"));
+            pesquisa.setSenha(conex.rs.getString("senha"));
+            pesquisa.setEmail(conex.rs.getString("email"));
+            pesquisa.setCategoria(conex.rs.getString("categoria"));
             
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro"+ex);
+            JOptionPane.showMessageDialog(null, "Erro\n"+ex);
         }
         
         conex.ExitConnection();
