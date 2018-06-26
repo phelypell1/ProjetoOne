@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
  * @author phelype
  */
 public class ViewCadUsuarios extends javax.swing.JFrame {
-
+    
     BeansCadUsuario cadUser = new BeansCadUsuario();
     DaoCadUsuario DaoUser = new DaoCadUsuario();
     int flag = 0;
@@ -82,7 +82,7 @@ public class ViewCadUsuarios extends javax.swing.JFrame {
 
         jLabel5.setText("Categoria");
 
-        jcomboCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Suporte", "Gerente", "Recepçao", "tecnico" }));
+        jcomboCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "Suporte", "Gerente", "Recepçao", "tecnico" }));
         jcomboCategoria.setEnabled(false);
 
         jLabel6.setText("E-mail");
@@ -285,9 +285,10 @@ public class ViewCadUsuarios extends javax.swing.JFrame {
                 textSenha.setText("");
                 textEmail.setText("");
                 jcomboCategoria.setSelectedItem("");
+                
             }
         } else {
-
+            
             cadUser.setMatricula(textMatricula.getText());
             cadUser.setUsername(textUserName.getText());
             cadUser.setSenha(textSenha.getText());
@@ -300,8 +301,18 @@ public class ViewCadUsuarios extends javax.swing.JFrame {
             textSenha.setText("");
             textEmail.setText("");
             jcomboCategoria.setSelectedItem("");
+            textBuscar.setText("");
+            
+            textMatricula.setEnabled(false);
+            textUserName.setEnabled(false);
+            textSenha.setEnabled(false);
+            textEmail.setEnabled(false);
+            jcomboCategoria.setEnabled(false);
+            buttonSalvar.setEnabled(false);
+            buttonCancelar.setEnabled(false);
+            buttonNovoCadastro.setEnabled(true);
         }
-
+        
 
     }//GEN-LAST:event_buttonSalvarActionPerformed
 
@@ -315,6 +326,8 @@ public class ViewCadUsuarios extends javax.swing.JFrame {
         buttonSalvar.setEnabled(true);
         buttonCancelar.setEnabled(true);
         buttonNovoCadastro.setEnabled(false);
+        textBuscar.setEnabled(false);
+        buttonBuscar.setEnabled(false);
     }//GEN-LAST:event_buttonNovoCadastroActionPerformed
 
     private void buttonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelarActionPerformed
@@ -326,7 +339,7 @@ public class ViewCadUsuarios extends javax.swing.JFrame {
         buttonSalvar.setEnabled(false);
         buttonCancelar.setEnabled(false);
         buttonNovoCadastro.setEnabled(true);
-
+        
         textMatricula.setText("");
         textUserName.setText("");
         textSenha.setText("");
@@ -334,13 +347,13 @@ public class ViewCadUsuarios extends javax.swing.JFrame {
         jcomboCategoria.setSelectedItem("");
         textBuscar.setText("");
         jTextField1.setText("");
-
+        
 
     }//GEN-LAST:event_buttonCancelarActionPerformed
 
     private void buttonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEditarActionPerformed
         flag = 2;
-
+        
         textMatricula.setEnabled(true);
         textUserName.setEnabled(true);
         textSenha.setEnabled(true);
@@ -366,6 +379,7 @@ public class ViewCadUsuarios extends javax.swing.JFrame {
             jcomboCategoria.setSelectedItem(model.getCategoria());
             
             buttonCancelar.setEnabled(true);
+            buttonEditar.setEnabled(true);
         }
 
     }//GEN-LAST:event_buttonBuscarActionPerformed

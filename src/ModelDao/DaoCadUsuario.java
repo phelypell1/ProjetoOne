@@ -60,7 +60,7 @@ public class DaoCadUsuario {
 
         conex.Conection();
         try {
-            PreparedStatement pst = conex.con.prepareStatement("update Usuarios set matricula = ?, userName = ?, senha = ?, email = ?, categoria = ?");
+            PreparedStatement pst = conex.con.prepareStatement("update Usuarios set matricula = ?, nomeUser = ?, senha = ?, email = ?, categoria = ?");
             pst.setString(1, editar.getMatricula());
             pst.setString(2, editar.getUsername());
             pst.setString(3, editar.getSenha());
@@ -69,7 +69,7 @@ public class DaoCadUsuario {
             pst.executeUpdate();
             JOptionPane.showMessageDialog(null, "Editado com sucesso !");
         } catch (SQLException ex) {
-            Logger.getLogger(DaoCadUsuario.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null,"Erro ao Editar.\n Consulte mensagem para decobrir o erro \n "+ex.getMessage());
         }
         conex.ExitConnection();
     }
