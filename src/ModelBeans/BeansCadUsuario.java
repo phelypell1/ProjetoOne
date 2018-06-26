@@ -3,17 +3,19 @@ package ModelBeans;
 
 public class BeansCadUsuario {
     
-    private String idUsuario;
+    private int idUsuario;
     private String nomeUsuario;
     private String username;
     private String senha;
     private String email;
     private String categoria;
+    private String pesquisa;
+    
 
     public BeansCadUsuario() {
     }
 
-    public BeansCadUsuario(String idUsuario, String nomeUsuario, String senha, String email, String categoria) {
+    public BeansCadUsuario(int idUsuario, String nomeUsuario, String senha, String email, String categoria) {
         this.idUsuario = idUsuario;
         this.nomeUsuario = nomeUsuario;
         this.senha = senha;
@@ -24,14 +26,14 @@ public class BeansCadUsuario {
     /**
      * @return the idUsuario
      */
-    public String getIdUsuario() {
+    public int getIdUsuario() {
         return idUsuario;
     }
 
     /**
      * @param idUsuario the idUsuario to set
      */
-    public void setIdUsuario(String idUsuario) {
+    public void setIdUsuario(int idUsuario) {
         this.idUsuario = idUsuario;
     }
 
@@ -103,5 +105,19 @@ public class BeansCadUsuario {
      */
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    /**
+     * @return the pesquisa
+     */
+    public String getPesquisa() {
+        return pesquisa;
+    }
+
+    /**
+     * @param pesquisa the pesquisa to set
+     */
+    public void setPesquisa(String pesquisa) {
+        this.pesquisa = pesquisa;
     }
 }
