@@ -28,7 +28,7 @@ public class DaoCadUsuario {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Erro ao cadastrar !" + ex.getMessage());
         }
-        conex.ExitConnection();
+        conex.CloseConnection();
     }
 
     public BeansCadUsuario BuscaUsuario(BeansCadUsuario mod) {
@@ -52,7 +52,7 @@ public class DaoCadUsuario {
             JOptionPane.showMessageDialog(null, "ERROOO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n" + ex.getMessage());
         }
 
-        conex.ExitConnection();
+        conex.CloseConnection();
         return mod;
     }
 
@@ -71,6 +71,21 @@ public class DaoCadUsuario {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null,"Erro ao Editar.\n Consulte mensagem para decobrir o erro \n "+ex.getMessage());
         }
-        conex.ExitConnection();
+        conex.CloseConnection();
+    }
+    
+    public void Excluir(BeansCadUsuario excluir){
+        conex.Conection();
+        try {
+            PreparedStatement pst = conex.con.prepareStatement("delete from Usuarios where idUsuario = ?");
+            pst.setInt(1, excluir.getIdUsuario());
+            pst.execute();
+            
+            JOptionPane.showMessageDialog(null, "Usuario Excluido com sucesso !");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao excluir"+ex.getMessage());
+        }
+        
+        conex.CloseConnection();
     }
 }

@@ -38,7 +38,7 @@ public class ConexaoDB {
         
     }
     
-    public void ExitConnection(){
+    public void CloseConnection(){
         try {
             con.close();
         } catch (SQLException ex) {

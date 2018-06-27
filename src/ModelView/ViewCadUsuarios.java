@@ -6,17 +6,23 @@
 package ModelView;
 
 import ModelBeans.BeansCadUsuario;
+import ModelConnection.ConexaoDB;
 import ModelDao.DaoCadUsuario;
+import ModelTable.ModelTabela;
+import java.lang.invoke.MethodHandles;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
 
 /**
  *
  * @author phelype
  */
 public class ViewCadUsuarios extends javax.swing.JFrame {
-    
+
     BeansCadUsuario cadUser = new BeansCadUsuario();
     DaoCadUsuario DaoUser = new DaoCadUsuario();
+    ConexaoDB conex = new ConexaoDB();
     int flag = 0;
 
     /**
@@ -24,6 +30,7 @@ public class ViewCadUsuarios extends javax.swing.JFrame {
      */
     public ViewCadUsuarios() {
         initComponents();
+        insereTable("select * from Usuarios order by nomeUser");
     }
 
     /**
@@ -114,6 +121,11 @@ public class ViewCadUsuarios extends javax.swing.JFrame {
 
         buttonExcluir.setText("Excluir");
         buttonExcluir.setEnabled(false);
+        buttonExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonExcluirActionPerformed(evt);
+            }
+        });
 
         buttonCancelar.setText("Cancelar");
         buttonCancelar.setEnabled(false);
@@ -279,30 +291,31 @@ public class ViewCadUsuarios extends javax.swing.JFrame {
                 cadUser.setEmail(textEmail.getText());
                 cadUser.setCategoria((String) jcomboCategoria.getSelectedItem());
                 DaoUser.Cadastrar(cadUser);
-                
+
                 textMatricula.setText("");
                 textUserName.setText("");
                 textSenha.setText("");
                 textEmail.setText("");
                 jcomboCategoria.setSelectedItem("");
-                
+                insereTable("select * from Usuarios order by nomeUser");
+
             }
         } else {
-            
+
             cadUser.setMatricula(textMatricula.getText());
             cadUser.setUsername(textUserName.getText());
             cadUser.setSenha(textSenha.getText());
             cadUser.setEmail(textEmail.getText());
             cadUser.setCategoria((String) jcomboCategoria.getSelectedItem());
             DaoUser.Editar(cadUser);
-            
+
             textMatricula.setText("");
             textUserName.setText("");
             textSenha.setText("");
             textEmail.setText("");
             jcomboCategoria.setSelectedItem("");
             textBuscar.setText("");
-            
+
             textMatricula.setEnabled(false);
             textUserName.setEnabled(false);
             textSenha.setEnabled(false);
@@ -311,8 +324,9 @@ public class ViewCadUsuarios extends javax.swing.JFrame {
             buttonSalvar.setEnabled(false);
             buttonCancelar.setEnabled(false);
             buttonNovoCadastro.setEnabled(true);
+            insereTable("select * from Usuarios order by nomeUser");
         }
-        
+
 
     }//GEN-LAST:event_buttonSalvarActionPerformed
 
@@ -339,7 +353,7 @@ public class ViewCadUsuarios extends javax.swing.JFrame {
         buttonSalvar.setEnabled(false);
         buttonCancelar.setEnabled(false);
         buttonNovoCadastro.setEnabled(true);
-        
+
         textMatricula.setText("");
         textUserName.setText("");
         textSenha.setText("");
@@ -347,13 +361,13 @@ public class ViewCadUsuarios extends javax.swing.JFrame {
         jcomboCategoria.setSelectedItem("");
         textBuscar.setText("");
         jTextField1.setText("");
-        
+
 
     }//GEN-LAST:event_buttonCancelarActionPerformed
 
     private void buttonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEditarActionPerformed
         flag = 2;
-        
+
         textMatricula.setEnabled(true);
         textUserName.setEnabled(true);
         textSenha.setEnabled(true);
@@ -377,13 +391,70 @@ public class ViewCadUsuarios extends javax.swing.JFrame {
             textSenha.setText(model.getSenha());
             textEmail.setText(model.getEmail());
             jcomboCategoria.setSelectedItem(model.getCategoria());
-            
+
             buttonCancelar.setEnabled(true);
             buttonEditar.setEnabled(true);
+            buttonExcluir.setEnabled(true);
         }
 
     }//GEN-LAST:event_buttonBuscarActionPerformed
 
+    private void buttonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExcluirActionPerformed
+        int opcao = 0;
+        JOptionPane.showConfirmDialog(rootPane, "Deseja ecluir esse usuario ?");
+
+        if (opcao == JOptionPane.YES_OPTION) {
+            cadUser.setIdUsuario(Integer.parseInt(jTextField1.getText()));
+            DaoUser.Excluir(cadUser);
+
+            textMatricula.setText("");
+            textUserName.setText("");
+            textSenha.setText("");
+            textEmail.setText("");
+            jcomboCategoria.setSelectedItem("");
+            textBuscar.setText("");
+            jTextField1.setText("");
+            insereTable("select * from Usuarios order by nomeUser");
+        }
+
+    }//GEN-LAST:event_buttonExcluirActionPerformed
+
+    public void insereTable(String sql){
+            ArrayList dados = new ArrayList();
+            String [] colunas = new String[]{"id","Matricula","Nome","Senha","email","Categoria"};
+            conex.Conection();
+            conex.executaSQL(sql);
+            try {
+            conex.rs.first();
+            
+            do{
+                dados.add(new Object[]{conex.rs.getInt("idUsuario"), conex.rs.getString("matricula"), conex.rs.getString("nomeUser"),conex.rs.getString("senha"),conex.rs.getString("email"),conex.rs.getString("categoria")});
+                
+            }while(conex.rs.next());
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro \n" +e.getMessage());
+        }
+            ModelTabela modelo = new ModelTabela(dados, colunas);
+            jTable1.setModel(modelo);
+            jTable1.getColumnModel().getColumn(0).setPreferredWidth(23);
+            jTable1.getColumnModel().getColumn(0).setResizable(true);
+            jTable1.getColumnModel().getColumn(1).setPreferredWidth(200);
+            jTable1.getColumnModel().getColumn(1).setResizable(true);
+            jTable1.getColumnModel().getColumn(2).setPreferredWidth(200);
+            jTable1.getColumnModel().getColumn(2).setResizable(true);
+            jTable1.getColumnModel().getColumn(3).setPreferredWidth(200);
+            jTable1.getColumnModel().getColumn(3).setResizable(true);
+            jTable1.getColumnModel().getColumn(4).setPreferredWidth(200);
+            jTable1.getColumnModel().getColumn(4).setResizable(true);
+            jTable1.getColumnModel().getColumn(5).setPreferredWidth(230);
+            jTable1.getColumnModel().getColumn(5).setResizable(true);
+            jTable1.getTableHeader().setReorderingAllowed(false);
+            jTable1.setAutoResizeMode(jTable1.AUTO_RESIZE_OFF);
+            jTable1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            
+            conex.CloseConnection();
+    }
     /**
      * @param args the command line arguments
      */
