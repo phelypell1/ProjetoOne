@@ -10,6 +10,7 @@ import ModelConnection.ConexaoDB;
 import ModelDao.DaoCadUsuario;
 import ModelTable.ModelTabela;
 import java.lang.invoke.MethodHandles;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
@@ -432,11 +433,12 @@ public class ViewCadUsuarios extends javax.swing.JFrame {
                 
             }while(conex.rs.next());
             
-        } catch (Exception e) {
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro \n" +e.getMessage());
         }
             ModelTabela modelo = new ModelTabela(dados, colunas);
             jTable1.setModel(modelo);
+            
             jTable1.getColumnModel().getColumn(0).setPreferredWidth(23);
             jTable1.getColumnModel().getColumn(0).setResizable(true);
             jTable1.getColumnModel().getColumn(1).setPreferredWidth(200);
