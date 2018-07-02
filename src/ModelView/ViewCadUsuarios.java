@@ -302,7 +302,6 @@ public class ViewCadUsuarios extends javax.swing.JFrame {
 
             }
         } else {
-
             cadUser.setMatricula(textMatricula.getText());
             cadUser.setUsername(textUserName.getText());
             cadUser.setSenha(textSenha.getText());
@@ -354,6 +353,8 @@ public class ViewCadUsuarios extends javax.swing.JFrame {
         buttonSalvar.setEnabled(false);
         buttonCancelar.setEnabled(false);
         buttonNovoCadastro.setEnabled(true);
+        buttonBuscar.setEnabled(true);
+        textBuscar.setEnabled(true);
 
         textMatricula.setText("");
         textUserName.setText("");

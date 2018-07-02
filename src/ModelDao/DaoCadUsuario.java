@@ -60,12 +60,13 @@ public class DaoCadUsuario {
 
         conex.Conection();
         try {
-            PreparedStatement pst = conex.con.prepareStatement("update Usuarios set matricula = ?, nomeUser = ?, senha = ?, email = ?, categoria = ?");
+            PreparedStatement pst = conex.con.prepareStatement("update Usuarios set matricula = ?, nomeUser = ?, senha = ?, email = ?, categoria = ? where idUsuario = ?");
             pst.setString(1, editar.getMatricula());
             pst.setString(2, editar.getUsername());
             pst.setString(3, editar.getSenha());
             pst.setString(4, editar.getEmail());
             pst.setString(5, editar.getCategoria());
+            pst.setInt(6, editar.getIdUsuario());
             pst.executeUpdate();
             JOptionPane.showMessageDialog(null, "Editado com sucesso !");
         } catch (SQLException ex) {
