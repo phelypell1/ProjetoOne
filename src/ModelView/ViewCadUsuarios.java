@@ -12,8 +12,11 @@ import ModelTable.ModelTabela;
 import java.lang.invoke.MethodHandles;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
+import static sun.util.calendar.CalendarUtils.mod;
 
 /**
  *
@@ -147,6 +150,11 @@ public class ViewCadUsuarios extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jLabel7.setText("Buscar Matricula");
@@ -286,6 +294,7 @@ public class ViewCadUsuarios extends javax.swing.JFrame {
                     || textSenha.getText().equalsIgnoreCase("") || textEmail.getText().equalsIgnoreCase("")) {
                 JOptionPane.showMessageDialog(null, "Para salvar os dados preencha os campos.");
             } else {
+
                 cadUser.setMatricula(textMatricula.getText());
                 cadUser.setUsername(textUserName.getText());
                 cadUser.setSenha(textSenha.getText());
@@ -382,17 +391,28 @@ public class ViewCadUsuarios extends javax.swing.JFrame {
 
     private void buttonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBuscarActionPerformed
         if (textBuscar.getText().equalsIgnoreCase("")) {
-            JOptionPane.showMessageDialog(null, "Campo em brnco !"
+            JOptionPane.showMessageDialog(null, "Campo em branco !"
                     + "\n Digite algo para pesquisar.");
         } else {
             cadUser.setPesquisa(textBuscar.getText());
             BeansCadUsuario model = DaoUser.BuscaUsuario(cadUser);
-            jTextField1.setText(String.valueOf(model.getIdUsuario()));
+            /*Campo para preencher os dados, nao utilizado*/
+            /*jTextField1.setText(String.valueOf(model.getIdUsuario()));
             textMatricula.setText(model.getMatricula());
             textUserName.setText(model.getUsername());
             textSenha.setText(model.getSenha());
             textEmail.setText(model.getEmail());
-            jcomboCategoria.setSelectedItem(model.getCategoria());
+            jcomboCategoria.setSelectedItem(model.getCategoria());*/
+            
+            //preenche a tabela com os campos da pesquisa//
+            insereTable("select * from Usuarios where matricula like'%" + cadUser.getPesquisa() + "%'");
+            textMatricula.setText("");
+            textUserName.setText("");
+            textSenha.setText("");
+            textEmail.setText("");
+            jcomboCategoria.setSelectedItem("");
+            textBuscar.setText("");
+            jTextField1.setText("");
 
             buttonCancelar.setEnabled(true);
             buttonEditar.setEnabled(true);
@@ -403,7 +423,7 @@ public class ViewCadUsuarios extends javax.swing.JFrame {
 
     private void buttonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExcluirActionPerformed
         int opcao = 0;
-        JOptionPane.showConfirmDialog(rootPane, "Deseja ecluir esse usuario ?");
+        opcao = JOptionPane.showConfirmDialog(rootPane, "Deseja excluir usuario ? ");
 
         if (opcao == JOptionPane.YES_OPTION) {
             cadUser.setIdUsuario(Integer.parseInt(jTextField1.getText()));
@@ -417,47 +437,69 @@ public class ViewCadUsuarios extends javax.swing.JFrame {
             textBuscar.setText("");
             jTextField1.setText("");
             insereTable("select * from Usuarios order by nomeUser");
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Cancelado !!!");
         }
 
     }//GEN-LAST:event_buttonExcluirActionPerformed
 
-    public void insereTable(String sql){
-            ArrayList dados = new ArrayList();
-            String [] colunas = new String[]{"id","Matricula","Nome","Senha","email","Categoria"};
-            conex.Conection();
-            conex.executaSQL(sql);
-            try {
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        String nome = "" + jTable1.getValueAt(jTable1.getSelectedRow(), 1);
+        conex.Conection();
+        conex.executaSQL("select * from Usuarios where matricula ='" + nome + "'");
+        try {
             conex.rs.first();
-            
-            do{
-                dados.add(new Object[]{conex.rs.getInt("idUsuario"), conex.rs.getString("matricula"), conex.rs.getString("nomeUser"),conex.rs.getString("senha"),conex.rs.getString("email"),conex.rs.getString("categoria")});
-                
-            }while(conex.rs.next());
-            
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Erro \n" +e.getMessage());
+            jTextField1.setText(String.valueOf(conex.rs.getInt("idUsuario")));
+            textMatricula.setText(conex.rs.getString("matricula"));
+            textUserName.setText(conex.rs.getString("nomeUser"));
+            textSenha.setText(conex.rs.getString("senha"));
+            textEmail.setText(conex.rs.getString("email"));
+            jcomboCategoria.setSelectedItem(conex.rs.getString("categoria"));
+        } catch (SQLException ex) {
+            Logger.getLogger(ViewCadUsuarios.class.getName()).log(Level.SEVERE, null, ex);
         }
-            ModelTabela modelo = new ModelTabela(dados, colunas);
-            jTable1.setModel(modelo);
-            
-            jTable1.getColumnModel().getColumn(0).setPreferredWidth(23);
-            jTable1.getColumnModel().getColumn(0).setResizable(true);
-            jTable1.getColumnModel().getColumn(1).setPreferredWidth(200);
-            jTable1.getColumnModel().getColumn(1).setResizable(true);
-            jTable1.getColumnModel().getColumn(2).setPreferredWidth(200);
-            jTable1.getColumnModel().getColumn(2).setResizable(true);
-            jTable1.getColumnModel().getColumn(3).setPreferredWidth(200);
-            jTable1.getColumnModel().getColumn(3).setResizable(true);
-            jTable1.getColumnModel().getColumn(4).setPreferredWidth(200);
-            jTable1.getColumnModel().getColumn(4).setResizable(true);
-            jTable1.getColumnModel().getColumn(5).setPreferredWidth(230);
-            jTable1.getColumnModel().getColumn(5).setResizable(true);
-            jTable1.getTableHeader().setReorderingAllowed(false);
-            jTable1.setAutoResizeMode(jTable1.AUTO_RESIZE_OFF);
-            jTable1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-            
-            conex.CloseConnection();
+        conex.CloseConnection();
+
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    public void insereTable(String sql) {
+        ArrayList dados = new ArrayList();
+        String[] colunas = new String[]{"id", "Matricula", "Nome", "Senha", "email", "Categoria"};
+        conex.Conection();
+        conex.executaSQL(sql);
+        try {
+            conex.rs.first();
+
+            do {
+                dados.add(new Object[]{conex.rs.getInt("idUsuario"), conex.rs.getString("matricula"), conex.rs.getString("nomeUser"), conex.rs.getString("senha"), conex.rs.getString("email"), conex.rs.getString("categoria")});
+
+            } while (conex.rs.next());
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ! Digite a matricula do usuario");
+        }
+        ModelTabela modelo = new ModelTabela(dados, colunas);
+        jTable1.setModel(modelo);
+
+        jTable1.getColumnModel().getColumn(0).setPreferredWidth(30);
+        jTable1.getColumnModel().getColumn(0).setResizable(true);
+        jTable1.getColumnModel().getColumn(1).setPreferredWidth(150);
+        jTable1.getColumnModel().getColumn(1).setResizable(true);
+        jTable1.getColumnModel().getColumn(2).setPreferredWidth(150);
+        jTable1.getColumnModel().getColumn(2).setResizable(true);
+        jTable1.getColumnModel().getColumn(3).setPreferredWidth(150);
+        jTable1.getColumnModel().getColumn(3).setResizable(true);
+        jTable1.getColumnModel().getColumn(4).setPreferredWidth(205);
+        jTable1.getColumnModel().getColumn(4).setResizable(true);
+        jTable1.getColumnModel().getColumn(5).setPreferredWidth(220);
+        jTable1.getColumnModel().getColumn(5).setResizable(true);
+        jTable1.getTableHeader().setReorderingAllowed(false);
+        jTable1.setAutoResizeMode(jTable1.AUTO_RESIZE_OFF);
+        jTable1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        conex.CloseConnection();
     }
+
     /**
      * @param args the command line arguments
      */
