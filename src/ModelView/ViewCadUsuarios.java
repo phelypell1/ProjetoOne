@@ -9,14 +9,12 @@ import ModelBeans.BeansCadUsuario;
 import ModelConnection.ConexaoDB;
 import ModelDao.DaoCadUsuario;
 import ModelTable.ModelTabela;
-import java.lang.invoke.MethodHandles;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
-import static sun.util.calendar.CalendarUtils.mod;
 
 /**
  *
@@ -35,6 +33,7 @@ public class ViewCadUsuarios extends javax.swing.JFrame {
     public ViewCadUsuarios() {
         initComponents();
         insereTable("select * from Usuarios order by nomeUser");
+        preencheJCombo();
     }
 
     /**
@@ -287,7 +286,23 @@ public class ViewCadUsuarios extends javax.swing.JFrame {
         setSize(new java.awt.Dimension(941, 490));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+    //Campo responsavel por preencher o jcombox//
+    public void preencheJCombo(){
+        conex.Conection();
+        
+        conex.executaSQL("select * from CategoriaUser order by descTipo");
+        try {
+            conex.rs.first();
+            jcomboCategoria.removeAllItems();
+            do{
+                jcomboCategoria.addItem(conex.rs.getString("descTipo"));
+            }while(conex.rs.next());
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro" +ex);
+        }
+        
+        conex.CloseConnection();
+    }
     private void buttonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSalvarActionPerformed
         if (flag == 1) {
             if (textMatricula.getText().equalsIgnoreCase("") || textUserName.getText().equalsIgnoreCase("")

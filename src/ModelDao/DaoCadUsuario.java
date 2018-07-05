@@ -12,8 +12,10 @@ public class DaoCadUsuario {
 
     BeansCadUsuario cadUser = new BeansCadUsuario();
     ConexaoDB conex = new ConexaoDB();
+    String nomeCat;
 
     public void Cadastrar(BeansCadUsuario cadastro) {
+        BuscaId(cadastro.getCategoria());
         conex.Conection();
         try {
             PreparedStatement pst = conex.con.prepareStatement("insert into Usuarios(matricula, nomeUser, senha, email, categoria) values (?,?,?,?,?)");
@@ -21,7 +23,7 @@ public class DaoCadUsuario {
             pst.setString(2, cadastro.getUsername());
             pst.setString(3, cadastro.getSenha());
             pst.setString(4, cadastro.getEmail());
-            pst.setString(5, cadastro.getCategoria());
+            pst.setInt(5, codId);
             pst.executeUpdate();
 
             JOptionPane.showMessageDialog(null, "Cadastro Realizado com sucesso !");
@@ -32,17 +34,19 @@ public class DaoCadUsuario {
     }
 
     public BeansCadUsuario BuscaUsuario(BeansCadUsuario mod) {
+       // NomeCategoria(mod.getCategoria());
         conex.Conection();
         conex.executaSQL("select * from Usuarios where matricula like'%" + mod.getPesquisa() + "%'");
         try {
 
             if (conex.rs.first()) {
+                NomeCategoria(conex.rs.getInt("categoria"));
                 mod.setIdUsuario(conex.rs.getInt("idUsuario"));
                 mod.setMatricula(conex.rs.getString("matricula"));
                 mod.setUsername(conex.rs.getString("nomeUser"));
                 mod.setSenha(conex.rs.getString("senha"));
                 mod.setEmail(conex.rs.getString("email"));
-                mod.setCategoria(conex.rs.getString("categoria"));
+                mod.setCategoria(conex.rs.getString(nomeCat));
                
             }else{
                 JOptionPane.showMessageDialog(null, "Nao Existe");
@@ -57,7 +61,7 @@ public class DaoCadUsuario {
     }
 
     public void Editar(BeansCadUsuario editar) {
-
+        BuscaId(editar.getCategoria());
         conex.Conection();
         try {
             PreparedStatement pst = conex.con.prepareStatement("update Usuarios set matricula = ?, nomeUser = ?, senha = ?, email = ?, categoria = ? where idUsuario = ?");
@@ -65,7 +69,7 @@ public class DaoCadUsuario {
             pst.setString(2, editar.getUsername());
             pst.setString(3, editar.getSenha());
             pst.setString(4, editar.getEmail());
-            pst.setString(5, editar.getCategoria());
+            pst.setInt(5, codId);
             pst.setInt(6, editar.getIdUsuario());
             pst.executeUpdate();
             JOptionPane.showMessageDialog(null, "Editado com sucesso !");
@@ -87,6 +91,36 @@ public class DaoCadUsuario {
             JOptionPane.showMessageDialog(null, "Erro ao excluir"+ex.getMessage());
         }
         
+        conex.CloseConnection();
+    }
+    int codId;
+    public void BuscaId(String  id){
+        conex.Conection();
+        
+        conex.executaSQL("select * from CategoriaUser where descTipo ='"+id+"'");
+        try {
+            conex.rs.first();
+            codId = conex.rs.getInt("idCategoria");
+            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+        
+        conex.CloseConnection();
+    }
+    
+    public void NomeCategoria(int idCat){
+        conex.Conection();
+        
+        try {
+            
+        conex.executaSQL("select * from CatedoriaUser where idCategoria = '"+idCat+"'");
+            conex.rs.first();
+            nomeCat = conex.rs.getString("descTipo");
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
         conex.CloseConnection();
     }
 }
