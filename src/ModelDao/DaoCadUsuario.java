@@ -12,6 +12,7 @@ public class DaoCadUsuario {
 
     BeansCadUsuario cadUser = new BeansCadUsuario();
     ConexaoDB conex = new ConexaoDB();
+    ConexaoDB conexe = new ConexaoDB();
     String nomeCat;
 
     public void Cadastrar(BeansCadUsuario cadastro) {
@@ -34,19 +35,19 @@ public class DaoCadUsuario {
     }
 
     public BeansCadUsuario BuscaUsuario(BeansCadUsuario mod) {
-       // NomeCategoria(mod.getCategoria());
         conex.Conection();
         conex.executaSQL("select * from Usuarios where matricula like'%" + mod.getPesquisa() + "%'");
         try {
 
-            if (conex.rs.first()) {
-                NomeCategoria(conex.rs.getInt("categoria"));
+           if (conex.rs.first()) {
+               BuscaCategoria(conex.rs.getInt("categoria"));
                 mod.setIdUsuario(conex.rs.getInt("idUsuario"));
                 mod.setMatricula(conex.rs.getString("matricula"));
                 mod.setUsername(conex.rs.getString("nomeUser"));
                 mod.setSenha(conex.rs.getString("senha"));
                 mod.setEmail(conex.rs.getString("email"));
-                mod.setCategoria(conex.rs.getString(nomeCat));
+                mod.setCategoria(nomeCat);
+                //mod.setCategoria(conex.rs.getString("Categoria"));
                
             }else{
                 JOptionPane.showMessageDialog(null, "Nao Existe");
@@ -109,18 +110,18 @@ public class DaoCadUsuario {
         conex.CloseConnection();
     }
     
-    public void NomeCategoria(int idCat){
-        conex.Conection();
+    public void BuscaCategoria(int idCat){
+        conexe.Conection();
         
         try {
             
-        conex.executaSQL("select * from CatedoriaUser where idCategoria = '"+idCat+"'");
-            conex.rs.first();
-            nomeCat = conex.rs.getString("descTipo");
+        conexe.executaSQL("select * from CatedoriaUser where idCategoria = '"+idCat);
+            conexe.rs.first();
+            nomeCat = conexe.rs.getString("descTipo");
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
-        conex.CloseConnection();
+        conexe.CloseConnection();
     }
 }

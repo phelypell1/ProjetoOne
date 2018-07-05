@@ -32,7 +32,7 @@ public class ViewCadUsuarios extends javax.swing.JFrame {
      */
     public ViewCadUsuarios() {
         initComponents();
-        insereTable("select * from Usuarios order by nomeUser");
+        insereTable("select idUsuario,matricula, nomeUser, senha, email, descTipo from Usuarios inner join CategoriaUser on categoria = idCategoria order by matricula");
         preencheJCombo();
     }
 
@@ -412,12 +412,6 @@ public class ViewCadUsuarios extends javax.swing.JFrame {
             cadUser.setPesquisa(textBuscar.getText());
             BeansCadUsuario model = DaoUser.BuscaUsuario(cadUser);
             /*Campo para preencher os dados, nao utilizado*/
-            /*jTextField1.setText(String.valueOf(model.getIdUsuario()));
-            textMatricula.setText(model.getMatricula());
-            textUserName.setText(model.getUsername());
-            textSenha.setText(model.getSenha());
-            textEmail.setText(model.getEmail());
-            jcomboCategoria.setSelectedItem(model.getCategoria());*/
             
             //preenche a tabela com os campos da pesquisa//
             insereTable("select * from Usuarios where matricula like'%" + cadUser.getPesquisa() + "%'");
@@ -486,12 +480,12 @@ public class ViewCadUsuarios extends javax.swing.JFrame {
             conex.rs.first();
 
             do {
-                dados.add(new Object[]{conex.rs.getInt("idUsuario"), conex.rs.getString("matricula"), conex.rs.getString("nomeUser"), conex.rs.getString("senha"), conex.rs.getString("email"), conex.rs.getString("categoria")});
+                dados.add(new Object[]{conex.rs.getInt("idUsuario"), conex.rs.getString("matricula"), conex.rs.getString("nomeUser"), conex.rs.getString("senha"), conex.rs.getString("email"), conex.rs.getString("descTipo")});
 
             } while (conex.rs.next());
 
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Erro ! Digite a matricula do usuario");
+            JOptionPane.showMessageDialog(null, "Erro"+e.getMessage());
         }
         ModelTabela modelo = new ModelTabela(dados, colunas);
         jTable1.setModel(modelo);
