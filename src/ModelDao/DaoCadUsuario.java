@@ -38,9 +38,9 @@ public class DaoCadUsuario {
         conex.Conection();
         conex.executaSQL("select * from Usuarios where matricula like'%" + mod.getPesquisa() + "%'");
         try {
-
+               conex.rs.next();
            if (conex.rs.first()) {
-               BuscaCategoria(conex.rs.getInt("categoria"));
+              BuscaCategoria(conex.rs.getString("descTipo"));
                 mod.setIdUsuario(conex.rs.getInt("idUsuario"));
                 mod.setMatricula(conex.rs.getString("matricula"));
                 mod.setUsername(conex.rs.getString("nomeUser"));
@@ -104,23 +104,23 @@ public class DaoCadUsuario {
             codId = conex.rs.getInt("idCategoria");
             
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
+            JOptionPane.showMessageDialog(null,"Erro busca Id"+ ex.getMessage());
         }
         
         conex.CloseConnection();
     }
     
-    public void BuscaCategoria(int idCat){
+    public void BuscaCategoria(String idCat){
         conexe.Conection();
         
         try {
             
-        conexe.executaSQL("select * from CatedoriaUser where idCategoria = '"+idCat);
+        conexe.executaSQL("select * from CategoriaUser where idCategoria ='"+idCat+"'");
             conexe.rs.first();
             nomeCat = conexe.rs.getString("descTipo");
 
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
+            JOptionPane.showMessageDialog(null,"Erro Busca Categoria"+ ex.getMessage());
         }
         conexe.CloseConnection();
     }
