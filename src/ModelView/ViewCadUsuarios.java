@@ -463,7 +463,7 @@ public class ViewCadUsuarios extends javax.swing.JFrame {
             textUserName.setText(conex.rs.getString("nomeUser"));
             textSenha.setText(conex.rs.getString("senha"));
             textEmail.setText(conex.rs.getString("email"));
-            jcomboCategoria.setSelectedItem(conex.rs.getString("categoria"));
+            jcomboCategoria.setSelectedItem(conex.rs.getInt("categoria"));
         } catch (SQLException ex) {
             Logger.getLogger(ViewCadUsuarios.class.getName()).log(Level.SEVERE, null, ex);
         }

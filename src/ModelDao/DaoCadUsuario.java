@@ -40,7 +40,7 @@ public class DaoCadUsuario {
         try {
                conex.rs.next();
            if (conex.rs.first()) {
-              BuscaCategoria(conex.rs.getString("descTipo"));
+                BuscaCategoria(conex.rs.getString("categoria"));
                 mod.setIdUsuario(conex.rs.getInt("idUsuario"));
                 mod.setMatricula(conex.rs.getString("matricula"));
                 mod.setUsername(conex.rs.getString("nomeUser"));
